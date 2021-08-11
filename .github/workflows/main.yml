@@ -8,14 +8,27 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
-    - uses: actions/checkout@master
-    - uses: jakejarvis/s3-sync-action@master
-      with:
-        args: --acl public-read --follow-symlinks --delete
+    - uses: actions/checkout@v1
+    - name: Deploy to EC2 Instance
+      uses: easingthemes/ssh-deploy@main
       env:
-        AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        AWS_REGION: 'ap-southeast-1'   # optional: defaults to us-east-1
-        SOURCE_DIR: './wp-content/themes'      # optional: defaults to entire repository
+          SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
+          ARGS: "-rltgoDzvO --delete"
+          SOURCE: "./wp-content/themes/twentytwenty"
+          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
+          REMOTE_USER: "ec2-user"
+          TARGET: "/usr/share/nginx/html/"
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - uses: actions/checkout@master
+  #   - uses: jakejarvis/s3-sync-action@master
+  #     with:
+  #       args: --acl public-read --follow-symlinks --delete
+  #     env:
+  #       AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
+  #       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  #       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  #       AWS_REGION: 'ap-southeast-1'   # optional: defaults to us-east-1
+  #       SOURCE_DIR: './wp-content/themes'      # optional: defaults to entire repository
