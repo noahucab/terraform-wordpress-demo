@@ -33,7 +33,7 @@ jobs:
           # REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
           REMOTE_HOST: "54.169.162.221"
           REMOTE_USER: "ec2-user"
-          TARGET: "/usr/share/nginx/html"
+          TARGET: "/home/ec2-user"
           
   #   runs-on: ubuntu-latest
   #   steps:
