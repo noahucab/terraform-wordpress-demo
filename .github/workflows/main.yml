@@ -24,12 +24,11 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - name: Deploy to EC2 Instance
-      uses: easingthemes/ssh-deploy@main
-
-      run: |
+      name: Deploy to EC2 Instance
+    - uses: easingthemes/ssh-deploy@main
+      name: Prepare SSH to work with the remote server
+    - run: |
         mkdir /usr/share/nginx/html/wp-content/themes/twentytwenty
-
       env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           ARGS: "-rltgoDzvO --delete"
